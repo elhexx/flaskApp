@@ -42,6 +42,9 @@ class Database(object):
         return data
         #return jsonify({'STUDENTS':data})
 
+
+    """-----DEL DATA---------"""
+
     def Del(self, fname, lname):
         # Create cursor
         cur = self.mysql.connection.cursor()
@@ -50,5 +53,31 @@ class Database(object):
         # Commit to DB
         self.mysql.connection.commit()
         cur.close()
+
+
+    """-----ADD ADMIN---------"""
+
+    def addAdmin(self, username, password):
+        # Create cursor
+        cur = self.mysql.connection.cursor()
+        # Execute query
+        cur.execute("INSERT INTO admins(username, password) VALUES(%s, %s)", (username, password))
+        # Commit to DB
+        self.mysql.connection.commit()
+        # Close connection
+        cur.close()
+
+    """-----Admin Login---------"""
+    def login(self, username):
+        # Create cursor
+        cur = self.mysql.connection.cursor()
+        # Execute query
+        result = cur.execute("SELECT * FROM admins WHERE username = %s " %username)
+        data = cur.fetone()
+        cur.close()
+        return result, data
+
+
+
 
 # {% for item in data.items()  %} {% endfor %}
